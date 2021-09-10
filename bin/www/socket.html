@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+    <head>
+        <script src='socket.io.js'></script>
+        <script>
+          var socket = io('http://localhost:8080');
+
+          socket.on('connect', function() {
+            console.log('Connected');
+          });
+
+          socket.on('new_coordinates', function(data) {
+            console.log(data);
+          });
+
+        </script>
+    </head>
+    <body>
+        <h1>Socket Test</h1>
+        <div>Open the console to see the action!</div>
+    </body>
+</html>

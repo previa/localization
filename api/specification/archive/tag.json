@@ -1,0 +1,264 @@
+"paths": {
+  "/tag/{tagID}":{
+    "x-swagger-router-controller":"anchor",
+    "get":{
+      "tags":["Tag"],
+      "operationId":"getTagById",
+      "description":"Returns the tag with the provided ID. The ID is a unique value for every tag. The tag is the object for which a location can be calulated.",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "The corresponding tag for the given ID.",
+          "schema": {
+              "$ref": "#/definitions/Tag"
+          }
+        },
+        "409":{
+          "description": "The given ID could not be found or could not be removed properly.",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        },
+        "default": {
+          "description": "Tag couldn't be consulted.",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "delete":{
+      "tags":["Tag"],
+      "operationId":"removeTagById",
+      "description":"Removes the tag with the provided ID. The ID is a unique value for every tag. The tag is the object for which a location can be calulated.",
+      "responses": {
+        "204": {
+          "description": "The corresponding tag for the given ID is removed.",
+        },
+        "409":{
+          "description": "The given ID could not be found or the tag could not
+          be removed properly."
+        },
+        "default": {
+          "description": "Something went wrong...",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "put":{
+      "tags":["Tag"],
+      "operationId":"updateTagById",
+      "description":"Updates the tag with the given ID to the tag that is submitted in the body of this request.",
+      "produces":[
+        "application/json"
+      ],
+      "parameters":[
+        {
+          "name": "tag_value",
+          "in":"body",
+          "description":"The tag to update",
+          "required":true,
+          "schema":{
+            "$ref":"#/definitions/Tag"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "The corresponding tag for the given ID.",
+          "schema": {
+              "$ref": "#/definitions/Tag"
+          }
+        },
+        "409":{
+          "description": "The given ID could not be found or the tag could not
+          be altered properly."
+        },
+        "default": {
+          "description": "Something went wrong...",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "parameters": [
+      {
+        "name": "tagID",
+        "in":"path",
+        "description":"Tag ID",
+        "required":true,
+        "type":"integer",
+        "format":"int64"
+      }
+    ]
+  },
+  "/tag/name/{tag_name}":{
+    "x-swagger-router-controller":"tag",
+    "get":{
+      "tags":["Tag"],
+      "operationId":"getTagByName",
+      "description":"Returns the tag with the provided name. The name is a unique value for every tag.",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "The corresponding tag for the given name.",
+          "schema": {
+              "$ref": "#/definitions/Tag"
+          }
+        },
+        "409": {
+          "description": "Something went wrong...",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "parameters": [
+      {
+        "name": "anchor_name",
+        "in":"path",
+        "description":"Anchor name",
+        "required":true,
+        "type":"string"
+      }
+    ]
+  },
+  "/tag":{
+    "x-swagger-router-controller":"tag",
+    "get":{
+      "tags":["Tag"],
+      "operationId":"getAllTags",
+      "description":"This call gives all the defined tags in every environment.",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "Returns the defined tags.",
+          "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Tag"
+              }
+          }
+        },
+        "default": {
+          "description": "Something went wrong...",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "post":{
+      "tags":["Tag"],
+      "operationId":"addTag",
+      "description":"Add the anchor to the list of anchors.",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "The corresponding tag for the given ID.",
+          "schema": {
+              "$ref": "#/definitions/Tag"
+          }
+        },
+        "409": {
+          "description": "The tag could not be added.",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    }
+  },
+  "/environment/tag/{environmentID}":{
+    "x-swagger-router-controller":"tag",
+    "get":{
+      "tags":["Tag"],
+      "operationId":"getTagsForEnvironment",
+      "description":"This call gives all the defined anchors in the zone with the given ID as parameter.",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "All the anchors situated in environment with environmentID equal to the given ID.",
+          "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Tag"
+              }
+          }
+        },
+        "404": {
+          "description": "Tags couldn't be loaded.",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "parameters": [
+      {
+        "name": "zoneID",
+        "in":"path",
+        "description":"ID of the specific zone",
+        "required":true,
+        "type":"integer"
+      }
+    ]
+  }
+},
+"definitions":{
+  "Tag":{
+    "type":"object",
+    "properties":{
+      "tagID":{
+        "type":"integer",
+        "format":"int64"
+      },
+      "name":{
+        "type":"string"
+      },
+      "environmentID":{
+        "type":"integer",
+        "format":"int64"
+      },
+      "hardwareVersion":{
+        "type":"string",
+        "format": "byte"
+      },
+      "firmwareVersion":{
+        "type":"string",
+        "format": "byte"
+      },
+      "batteryLevel":{
+        "type":"number",
+        "format":"float"
+      },
+      "updateRate":{
+        "type":"integer",
+        "format":"int32"
+      },
+      "iconPath":{
+        "type":"string"
+      },
+      "iconColor":{
+        "type":"string"
+      }
+    },
+    "required":[
+      "tagID",
+      "name"
+    ]
+  }

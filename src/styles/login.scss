@@ -1,0 +1,49 @@
+#login-parent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#loginform {
+  width: 450px;
+  max-width: 100%;
+  border: 1px solid $border-color;
+  padding: 32px 32px;
+  margin-top: 150px;
+
+  img {
+    margin: 0 auto;
+    display: block;
+  }
+
+  #login-tagline {
+    text-align: center;
+    color: $text-color;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 32px 0 64px 0;
+  }
+
+  #link-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+
+    a {
+      font-size: 14px;
+      color: $text-color;
+      text-decoration: none;
+    }
+
+    a:hover, a:active {
+      text-decoration: underline;
+    }
+  }
+
+  .big-button {
+    display: block;
+    border: 0;
+    line-height: 0px; /*Hack to center text vertically*/
+    padding: 36px 16px;
+  }
+}

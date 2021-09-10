@@ -1,0 +1,15 @@
+ALTER TABLE Zone ADD environmentID INTEGER;
+ALTER TABLE Zone ADD CONSTRAINT zone_environment FOREIGN KEY (environmentID) REFERENCES Environment(environmentID);
+ALTER TABLE ZoneBorderPoint ADD zoneID INTEGER;
+ALTER TABLE ZoneBorderPoint ADD CONSTRAINT zoneborderpoint_zone FOREIGN KEY (zoneID) REFERENCES Zone(zoneID);
+ALTER TABLE Anchor ADD environmentID INTEGER;
+ALTER TABLE Anchor ADD CONSTRAINT anchor_environment FOREIGN KEY (environmentID) REFERENCES Environment(environmentID);
+ALTER TABLE Anchor ADD CONSTRAINT anchor_status CHECK(status < 3 and status >= 0);
+ALTER TABLE Tag ADD environmentID INTEGER;
+ALTER TABLE Tag ADD CONSTRAINT tag_environment FOREIGN KEY (environmentID) REFERENCES Environment(environmentID);
+ALTER TABLE Position ADD tagID INTEGER;
+ALTER TABLE Position ADD CONSTRAINT position_tag FOREIGN KEY (tagID) REFERENCES Tag(tagID);
+ALTER TABLE TagLabel ADD tagID INTEGER;
+ALTER TABLE TagLabel ADD CONSTRAINT tag_taglabel   FOREIGN KEY (tagID) REFERENCES Tag(tagID);
+ALTER TABLE TagLabel ADD labelID INTEGER;
+ALTER TABLE TagLabel ADD CONSTRAINT label_taglabel   FOREIGN KEY (labelID)   REFERENCES Label(labelID);

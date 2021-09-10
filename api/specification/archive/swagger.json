@@ -1,0 +1,327 @@
+{
+	"swagger":"2.0",
+	"info": {
+		"title": "Pozyx location api",
+		"description": "The pozyx location api can be used by the client who requires a more customizable application. The general idea of the basic platform is to consult tags within a zone or environment. To do this there are several items needed. All these items are listed in this api. The api provides a lot of possible functions on every aspect of the application.The enitities: anchor, tag, position, label, zone, environment and zone-border point can be consulted, added, altered and deleted through this api.",
+		"termsOfService": "http://pozyx.io/api/termsOfService",
+		"contact": {
+			"name": "Pozyx",
+			"url": "http://www.pozyx.io",
+			"email":"info@pozyx.io"
+		},
+		"license": {
+			"name": "Apache 2.0",
+			"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+		},
+		"version": "0.0.1"
+	},
+	"host":"www.pozyx.io",
+	"basePath":"/api",
+	"schemes":["https", "http"],
+	"paths": {
+		"/anchor/{anchorID}":{
+			"get":{
+				"description":"Returns the anchor with the provided ID. The ID is a unique value for every anchor. The anchor is the object that is static and makes it possible to calculate the position of a tag.",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "The corresponding anchor for the given ID.",
+						"schema": {
+								"$ref": "#/definitions/Anchor"
+						}
+					},
+					"409":{
+						"description": "The given ID could not be found or could not be removed properly."
+					},
+					"default": {
+						"description": "Something went wrong...",
+						"schema": {
+							"$ref":"#/definitions/ErrorModel"
+						}
+					}
+				}
+			},
+			"delete":{
+				"description":"Removes the anchor with the provided ID. The ID is a unique value for every anchor. The anchor is the object that is static and makes it possible to calculate the position of a tag.",
+				"responses": {
+					"204": {
+						"description": "The corresponding anchor for the given ID is removed."
+          },
+					"409":{
+						"description": "The given ID could not be found or the anchor could not be removed properly."
+					},
+					"default": {
+						"description": "Something went wrong...",
+						"schema": {
+							"$ref":"#/definitions/ErrorModel"
+						}
+					}
+				}
+			},
+			"put":{
+				"description":"Updates the anchor with the given ID to the anchor instance which is submitted in the body of this request.",
+				"produces":[
+					"application/json"
+				],
+				"parameters":[
+					{
+						"name": "anchor_value",
+						"in":"body",
+						"description":"The anchor to update",
+						"required":true,
+						"schema":{
+							"$ref":"#/definitions/Anchor"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "The altered anchor.",
+						"schema": {
+								"$ref": "#/definitions/Anchor"
+						}
+					},
+					"409":{
+						"description": "The given ID could not be found or the anchor could not be altered properly."
+					},
+					"default": {
+						"description": "Something went wrong...",
+						"schema": {
+							"$ref":"#/definitions/ErrorModel"
+						}
+					}
+				}
+			},
+			"parameters": [
+				{
+					"name": "anchorID",
+					"in":"path",
+					"description":"Anchor ID",
+					"required":true,
+					"type":"integer",
+					"format":"int64"
+				}
+			]
+		},
+		"/anchor/name={anchor_name}":{
+			"get":{
+			"description":"Returns the anchor with the provided name. The name is a unique value for every anchor. The anchor is the object that is static and makes it possible to calculate the position of a tag.",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "The corresponding anchor for the given name.",
+						"schema": {
+								"$ref": "#/definitions/Anchor"
+						}
+					},
+					"409":{
+						"description": "The given name could not be found or the anchor could not be fetched properly."
+					},
+					"default": {
+						"description": "Something went wrong...",
+						"schema": {
+							"$ref":"#/definitions/ErrorModel"
+						}
+					}
+				}
+			},
+			"parameters": [
+				{
+					"name": "anchor_name",
+					"in":"path",
+					"description":"Anchor name",
+					"required":true,
+					"type":"string"
+				}
+			]
+		},
+		"/anchors":{
+			"get":{
+				"description":"This call gives all the defined anchors in every environment.",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Returns every anchors.",
+						"schema": {
+								"type": "array",
+								"items": {
+									"$ref": "#/definitions/Anchor"
+								}
+						}
+					},
+					"default": {
+						"description": "Something went wrong...",
+						"schema": {
+							"$ref":"#/definitions/ErrorModel"
+						}
+					}
+				}
+			},
+			"post":{
+				"description":"Add an array of anchors to the list of al the anchors.",
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name":"Anchor",
+						"in":"body",
+						"description":"All the anchors to add.",
+						"required":true,
+						"schema":{
+							"type":"array",
+							"items":{
+								"$ref":"#/definitions/Anchor"
+							}
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "The anchors are added correctly."
+          },
+					"409": {
+						"description": "The anchors couldn't be added to the list."
+					},
+					"default": {
+						"description": "Something went wrong...",
+						"schema": {
+							"$ref":"#/definitions/ErrorModel"
+						}
+					}
+				}
+			}
+		},
+		"/anchors/{zoneID}":{
+			"get":{
+				"description":"This call returns all the defined anchors in the zone with the given zone ID as parameter.",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "All the anchors situated in zone with zoneID equal to the given ID.",
+						"schema": {
+								"type": "array",
+								"items": {
+									"$ref": "#/definitions/Anchor"
+								}
+						}
+					},
+					"409":{
+						"description": "The given ID could not be found."
+					},
+					"default": {
+						"description": "Something went wrong...",
+						"schema": {
+							"$ref":"#/definitions/ErrorModel"
+						}
+					}
+				}
+			},
+			"parameters": [
+				{
+					"name": "zoneID",
+					"in":"path",
+					"description":"The ID of the zone.",
+					"required":true,
+					"type":"integer"
+				}
+			]
+		},
+		"/anchor":{
+			"post":{
+				"description":"Add the anchor to the list of anchors.",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "The corresponding anchor for the given ID.",
+						"schema": {
+								"$ref": "#/definitions/Anchor"
+						}
+					},
+					"409":{
+						"description": "The given ID could not be found or the anchor could not be added properly."
+					},
+					"default": {
+						"description": "Something went wrong...",
+						"schema": {
+							"$ref":"#/definitions/ErrorModel"
+						}
+					}
+				}
+			}
+		}
+	},
+	"definitions":{
+		"Anchor":{
+			"type":"object",
+			"properties":{
+				"anchorID":{
+					"type":"integer",
+					"format":"int64"
+				},
+				"name":{
+					"type":"string"
+				},
+				"zoneID":{
+					"type":"integer",
+					"format":"int64"
+				},
+				"hardwareVersion":{
+					"type":"string",
+					"format": "byte"
+				},
+				"firmwareVersion":{
+					"type":"string",
+					"format": "byte"
+				},
+				"x":{
+					"type":"integer",
+					"format":"int32"
+				},
+				"y":{
+					"type":"integer",
+					"format":"int32"
+				},
+				"z":{
+					"type":"integer",
+					"format":"int32"
+				},
+				"timestamp":{
+					"type":"string",
+					"format":"date-time"
+				}
+			},
+			"required":[
+				"anchorID",
+				"name"
+			]
+		},
+		"ErrorModel": {
+      "type": "object",
+      "required": [
+        "message",
+        "code"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 600
+        }
+      }
+    }
+	}
+}

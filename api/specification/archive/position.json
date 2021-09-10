@@ -1,0 +1,155 @@
+"paths": {
+  "/tag/position/{tagID}":{
+    "x-swagger-router-controller":"position",
+    "get":{
+      "tags":["Tag","Position"],
+      "operationId":"getPositionFromTag",
+      "description":"Returns the positions for the provided ID. The ID is a unique value for every tag. The positions are chronological events for a tag.",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "The corresponding positions for the given ID.",
+          "schema": {
+              "type":"array",
+              "$ref": "#/definitions/Position"
+          }
+        },
+        "409":{
+          "description": "The given ID could not be found or could not be removed properly.",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "parameters": [
+      {
+        "name": "tagID",
+        "in":"path",
+        "description":"Tag ID",
+        "required":true,
+        "type":"integer",
+        "format":"int64"
+      }
+    ]
+  },
+  "/position/{positionID}":{
+    "x-swagger-router-controller":"position",
+    "get":{
+      "tags":["Tag","Position"],
+      "operationId":"getPositionById",
+      "description":"Returns the positions for the provided ID. The ID is a unique value for every tag. The positions are chronological events for a tag.",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "The corresponding positions for the given ID.",
+          "schema": {
+              "$ref": "#/definitions/Position"
+          }
+        },
+        "409":{
+          "description": "The given ID could not be found.",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "delete":{
+      "tags":["Tag","Position"],
+      "operationId":"removePositionById",
+      "description":"Removes the position with the given ID.",
+      "produces":[
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "The position was deleted succesfully."
+        },
+        "409":{
+          "description": "The position could not be deleted.",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "parameters": [
+      {
+        "name": "positionID",
+        "in":"path",
+        "description":"Position ID",
+        "required":true,
+        "type":"integer",
+        "format":"int64"
+      }
+    ]
+  },
+  "/position":{
+    "x-swagger-router-controller":"position",
+    "post":{
+      "tags":["Tag","Position"],
+      "operationId":"addPosition",
+      "description":"Ads the position to the collection of positions.",
+      "produces":[
+        "application/json"
+      ],
+      "parameters":[
+        {
+          "name": "position_value",
+          "in":"body",
+          "description":"The postion to add.",
+          "required":true,
+          "schema":{
+            "$ref":"#/definitions/Position"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "The position was added succesfully."
+        },
+        "409":{
+          "description": "The position could not be added.",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+  }
+},
+"definitions":{
+  "Position":{
+    "type":"object",
+    "properties":{
+      "positionID":{
+        "type":"integer",
+        "format":"int64"
+      },
+      "tagID":{
+        "type":"integer",
+        "format":"int64"
+      },
+      "x":{
+        "type":"integer",
+        "format": "int32"
+      },
+      "y":{
+        "type":"integer",
+        "format": "int32"
+      },
+      "z":{
+        "type":"integer",
+        "format": "int32"
+      }
+    },
+    "required":[
+      "positionID",
+      "tagID"
+    ]
+  }

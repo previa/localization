@@ -1,0 +1,292 @@
+"/zone/point/{zoneID}":{
+  "x-swagger-router-controller":"zone",
+  "get":{
+    "tags":["Zone"],
+    "operationId":"getBorderPointsFromZone",
+    "description":"Returns all the points that define the zone.",
+    "produces": [
+      "application/json"
+    ],
+    "responses": {
+      "200": {
+        "description": "The corresponding tag for the given ID.",
+        "schema": {
+          "type":"array",
+          "items":{
+            "$ref": "#/definitions/ZoneBorderPoint"
+          }
+        }
+      },
+      "409":{
+        "description": "The given zone could not be found.",
+        "schema": {
+          "$ref":"#/definitions/ErrorModel"
+        }
+      }
+    }
+  },
+  "parameters":[
+    {
+      "name": "zoneID",
+      "in":"path",
+      "description":"The tag to update",
+      "required":true,
+      "type":"string"
+    }
+  ]
+},
+"/zone/{zoneID}":{
+  "x-swagger-router-controller":"zone",
+  "get":{
+    "tags":["Zone"],
+    "operationId":"getZoneById",
+    "description":"Returns the zone with the given ID.",
+    "produces": [
+      "application/json"
+    ],
+    "responses": {
+      "200": {
+        "description": "The corresponding zone for the given ID.",
+        "schema": {
+          "$ref": "#/definitions/Zone"
+        }
+      },
+      "409":{
+        "description": "The given ID could not be found.",
+        "schema": {
+          "$ref":"#/definitions/ErrorModel"
+        }
+      }
+    }
+  },
+  "delete":{
+    "tags":["Zone"],
+    "operationId":"removeZoneById",
+    "description":"Removes the zone with the provided ID. The ID is a unique value for every zone. The zone is a logical part of an environment.",
+    "responses": {
+      "204": {
+        "description": "The corresponding zone for the given ID is removed.",
+      },
+      "409":{
+        "description": "The given ID could not be found or the zone could not be removed properly."
+      }
+    }
+  },
+  "put":{
+    "tags":["Zone"],
+    "operationId":"updateZoneById",
+    "description":"Updates the zone with the given ID to the zone that is submitted in the body of this request.",
+    "produces":[
+      "application/json"
+    ],
+    "parameters":[
+      {
+        "name": "zone_value",
+        "in":"body",
+        "description":"The zone to update",
+        "required":true,
+        "schema":{
+          "$ref":"#/definitions/Zone"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "The corresponding zone for the given ID.",
+        "schema": {
+          "$ref": "#/definitions/Zone"
+        }
+      },
+      "409":{
+        "description": "The given ID could not be found or the zone could not be removed."
+      }
+    }
+  },
+  "parameters":[
+    {
+      "name": "zoneID",
+      "in":"path",
+      "description":"The tag to update",
+      "required":true,
+      "type":"string"
+    }
+  ]
+},
+"/zone":{
+  "x-swagger-router-controller":"zone",
+  "put":{
+    "tags":["Zone"],
+    "operationId":"addZone",
+    "description":"Adds a zone to the collection of all the zones.",
+    "produces":[
+      "application/json"
+    ],
+    "responses": {
+      "200": {
+        "description": "The zone is added succesfully."
+      },
+      "409":{
+        "description": "The given zone could not be added."
+      }
+    }
+  },
+  "parameters":[
+    {
+      "name": "zone",
+      "in":"body",
+      "description":"The zone to add.",
+      "required":true,
+      "schema":{
+        "$ref":"#/definitions/Zone"
+      }
+    }
+  ]
+},
+"/environment/zone/{environmentID}":{
+  "x-swagger-router-controller":"zone",
+  "get":{
+    "tags":["Zone"],
+    "operationId":"getZoneForEnvironment",
+    "description":"Returns the zones that belong to the given environment.",
+    "produces": [
+      "application/json"
+    ],
+    "responses": {
+      "200": {
+        "description": "The zones that are situated in the environment.",
+        "type":"array",
+        "schema": {
+          "$ref": "#/definitions/Zone"
+        }
+      },
+      "409":{
+        "description": "The given ID could not be found.",
+        "schema": {
+          "$ref":"#/definitions/ErrorModel"
+        }
+      }
+    }
+  },
+  "parameters":[
+    {
+      "name": "environmentID",
+      "in":"path",
+      "description":"The environment to seach in.",
+      "required":true,
+      "type":"string"
+    }
+  ]
+},
+"/point":{
+  "x-swagger-router-controller":"zone",
+  "post":{
+    "tags":["Point"],
+    "operationId":"addBorderPoint",
+    "description":"Adding a point that defines a zone.",
+    "parameters":[
+      {
+        "name": "ZoneBorderPoint",
+        "in":"body",
+        "description":"The point to add",
+        "required":true,
+        "schema":{
+          "$ref":"#/definitions/ZoneBorderPoint"
+        }
+      }
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "responses": {
+      "200": {
+        "description": "The point is added succesfully.",
+        "schema": {
+          "$ref": "#/definitions/Tag"
+        }
+      },
+      "409":{
+        "description": "The zone could not be found or the point could not be added.",
+        "schema": {
+          "$ref":"#/definitions/ErrorModel"
+        }
+      }
+    }
+  }
+},
+"/point/{pointID}":{
+  "x-swagger-router-controller":"zone",
+  "get":{
+    "tags":["Point"],
+    "operationId":"getZoneBorderPointById",
+    "description":"Returns the point with the given ID.",
+    "produces": [
+      "application/json"
+    ],
+    "responses": {
+      "200": {
+        "description": "The corresponding point for the given ID.",
+        "schema": {
+          "$ref": "#/definitions/ZoneBorderPoint"
+        }
+      },
+      "409":{
+        "description": "The given ID could not be found.",
+        "schema": {
+          "$ref":"#/definitions/ErrorModel"
+        }
+      }
+    }
+  },
+  "delete":{
+    "tags":["Point"],
+    "operationId":"removeZoneBorderPointById",
+    "description":"Removes the point with the provided ID. The ID is a unique value for every point. The points define a zone.",
+    "responses": {
+      "204": {
+        "description": "The corresponding point for the given ID is removed.",
+      },
+      "409":{
+        "description": "The given ID could not be found."
+      }
+    }
+  },
+  "put":{
+    "tags":["Point"],
+    "operationId":"updateZoneBorderPointById",
+    "description":"Updates the point with the given ID to the point that is submitted in the body of this request.",
+    "produces":[
+      "application/json"
+    ],
+    "parameters":[
+      {
+        "name": "point_value  ",
+        "in":"body",
+        "description":"The point to update",
+        "required":true,
+        "schema":{
+          "$ref":"#/definitions/ZoneBorderPoint"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "The corresponding point for the given ID.",
+        "schema": {
+          "$ref": "#/definitions/Zone"
+        }
+      },
+      "409":{
+        "description": "The given ID could not be found or the point could not be removed."
+      }
+    }
+  },
+  "parameters":[
+    {
+      "name": "zoneBorderPointID",
+      "in":"path",
+      "description":"The point to update",
+      "required":true,
+      "type":"string"
+    }
+  ]
+}

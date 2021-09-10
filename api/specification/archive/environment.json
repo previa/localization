@@ -1,0 +1,86 @@
+"paths": {
+  "/environment/{environmentID}":{
+    "x-swagger-router-controller":"environment",
+    "get":{
+      "tags":["Environment"],
+      "operationId":"getEnvironmentById",
+      "description":"Returns the environment for the provided ID. The ID is a unique value for every environment.",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "The corresponding environment for the given ID.",
+          "schema": {
+              "$ref": "#/definitions/Environment"
+          }
+        },
+        "409":{
+          "description": "The given ID could not be found.",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "put":{
+      "tags":["Environment"],
+      "operationId":"getEnvironmentById",
+      "description":"Updates the environment for the provided ID. The ID is a unique value for every environment.",
+      "produces": [
+        "application/json"
+      ],
+      "parameters":[
+        {
+          "name":"environment",
+          "in":"body",
+          "description":"Environment to update.",
+          "required":true,
+          "schema":{
+            "$ref":"#/definitions/Environment"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "The corresponding environment is updated."
+        },
+        "409":{
+          "description": "The given ID could not be found.",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "parameters": [
+      {
+        "name": "environmentID",
+        "in":"path",
+        "description":"Environment ID",
+        "required":true,
+        "type":"integer",
+        "format":"int64"
+      }
+    ]
+  }
+},
+"definitions":{
+  "Environment":{
+    "type":"object",
+    "properties":{
+      "environmentID":{
+        "type":"integer",
+        "format":"int64"
+      },
+      "name":{
+        "type":"string"
+      },
+      "description":{
+        "type":"string"
+      }
+    },
+    "required":[
+      "environmentID"
+    ]
+  }

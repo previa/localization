@@ -1,0 +1,179 @@
+"paths": {
+  "/label/{labelID}":{
+    "x-swagger-router-controller":"label",
+    "get":{
+      "labels":["Label"],
+      "operationId":"getLabelById",
+      "description":"Returns the label with the provided ID. The ID is a unique value for every label. The label is a method to group tags.",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "The corresponding label for the given ID.",
+          "schema": {
+              "$ref": "#/definitions/Label"
+          }
+        },
+        "409":{
+          "description": "The given ID could not be found or could not be removed properly.",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "delete":{
+      "labels":["Label"],
+      "operationId":"removeLabelById",
+      "description":"Removes the label with the provided ID. The ID is a unique value for every label. The label is a method to group tags.",
+      "responses": {
+        "204": {
+          "description": "The corresponding label for the given ID is removed."
+        },
+        "409":{
+          "description": "The given ID could not be found or the label could not be removed properly."
+        }
+      }
+    },
+    "put":{
+      "labels":["Label"],
+      "operationId":"updateLabelById",
+      "description":"Updates the label with the given ID to the label that is submitted in the body of this request.",
+      "produces":[
+        "application/json"
+      ],
+      "parameters":[
+        {
+          "name": "label_value",
+          "in":"body",
+          "description":"The label to update",
+          "required":true,
+          "schema":{
+            "$ref":"#/definitions/label"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "The label was added succesfully."
+        },
+        "409":{
+          "description": "The given ID could not be found or the label could not be altered properly."
+        }
+      }
+    },
+    "parameters": [
+      {
+        "name": "labelID",
+        "in":"path",
+        "description":"label ID",
+        "required":true,
+        "type":"integer",
+        "format":"int64"
+      }
+    ]
+  },
+  "/label/name/{label_name}":{
+    "x-swagger-router-controller":"label",
+    "get":{
+      "labels":["Label"],
+      "operationId":"getLabelByName",
+      "description":"Returns the label with the provided name. The name is a unique value for every label.",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "The corresponding label for the given name.",
+          "schema": {
+              "$ref": "#/definitions/Label"
+          }
+        },
+        "409": {
+          "description": "Something went wrong...",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "parameters": [
+      {
+        "name": "label_name",
+        "in":"path",
+        "description":"label name",
+        "required":true,
+        "type":"string"
+      }
+    ]
+  },
+  "/label":{
+    "x-swagger-router-controller":"label",
+    "get":{
+      "labels":["Label"],
+      "operationId":"getAllLabels",
+      "description":"This call gives all the defined labels.",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "Returns the defined labels.",
+          "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Label"
+              }
+          }
+        },
+        "409": {
+          "description": "Something went wrong...",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    },
+    "post":{
+      "labels":["Label"],
+      "operationId":"addLabel",
+      "description":"Add the label to the list of labels.",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "The corresponding label for the given ID.",
+          "schema": {
+              "$ref": "#/definitions/label"
+          }
+        },
+        "409": {
+          "description": "The label could not be added.",
+          "schema": {
+            "$ref":"#/definitions/ErrorModel"
+          }
+        }
+      }
+    }
+  }
+},
+"definitions":{
+  "Label":{
+    "type":"object",
+    "properties":{
+      "labelID":{
+        "type":"integer",
+        "format":"int64"
+      },
+      "name":{
+        "type":"string"
+      }
+    },
+    "required":[
+      "labelID",
+      "name"
+    ]
+  }
+}

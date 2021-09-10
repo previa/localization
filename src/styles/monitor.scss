@@ -1,0 +1,34 @@
+$height : 13px;
+
+#monitor_container{
+  ul {
+    width:50%;
+    display: inline-block;
+    height: $height;
+    li {
+      max-width: 10%;
+      display: inline;
+      list-style-type: none;
+      margin-right:10%;
+    }
+
+    a, .unactive-tab {
+      text-decoration: none;
+      font-size: 20px;
+      color: $text-color;
+      border-bottom: 1px solid transparent;
+      padding: 8px 0;
+    }
+
+    a:hover, .active-tab {
+      border-bottom: 1px solid $text-color;
+    }
+  }
+  input{
+    display: inline-block;
+    margin-left: 1%;
+    //padding:20px;
+    font-family: FontAwesome, sans-serif;
+    width: 20%;
+  }
+}

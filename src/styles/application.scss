@@ -1,0 +1,21 @@
+// This is the top-level scss file. Import all other files in here.
+$border-color: #C3C3C3;
+$text-color: #959595;
+
+@import 'general';
+@import 'header';
+@import 'map';
+@import 'login';
+@import 'intropage';
+@import 'monitor';
+
+// Icons
+@import 'font_awesome/font-awesome';
+
+// Vex
+@import 'vex/vex';
+@import 'vex/vex-theme-default';
+@import 'vex/vex-theme-bottom-right-corner';
+
+// React-table
+@import 'react-table/react-table';

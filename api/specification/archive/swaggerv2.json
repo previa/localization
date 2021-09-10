@@ -1,0 +1,814 @@
+{
+  "swagger":"2.0",
+  "info":{
+    "title":"Pozyx location api",
+    "description":"The pozyx location api can be used by the client who requires a more customizable application. The general idea of the basic platform is to consult tags within an environment. To do this there are several items needed. All these items are listed in this api. The api provides a lot of possible functions on every aspect of the application.The enitities: anchor, tag, position, label, zone, environment and zone-border point can be consulted, added, altered and deleted through this api.",
+    "termsOfService":"http://pozyx.io/api/termsOfService",
+    "contact":{
+      "name":"Pozyx",
+      "url":"http://www.pozyx.io",
+      "email":"info@pozyx.io"
+    },
+    "license":{
+      "name":"Apache 2.0",
+      "url":"http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version":"0.0.1"
+  },
+  "host":"localhost:8080",
+  "basePath":"/api",
+  "schemes":[
+    "http"
+  ],
+  "paths":{
+    "/anchor/{anchorID}":{
+      "x-swagger-router-controller":"anchor",
+      "get":{
+        "tags":[
+          "Anchor"
+        ],
+        "operationId":"getAnchorById",
+        "description":"Returns the anchor with the provided ID. The ID is a unique value for every anchor. The anchor is the object that is static and makes it possible to calculate the position of a tag.",
+        "produces":[
+          "application/json"
+        ],
+        "responses":{
+          "200":{
+            "description":"The corresponding anchor for the given ID.",
+            "schema":{
+              "$ref":"#/definitions/Anchor"
+            }
+          },
+          "409":{
+            "description":"The given ID could not be found or could not be removed properly.",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          },
+          "default":{
+            "description":"Something went wrong...",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "delete":{
+        "tags":[
+          "Anchor"
+        ],
+        "operationId":"removeAnchorById",
+        "description":"Removes the anchor with the provided ID. The ID is a unique value for every anchor. The anchor is the object that is static and makes it possible to calculate the position of a tag.",
+        "responses":{
+          "204":{
+            "description":"The corresponding anchor for the given ID is removed."
+          },
+          "409":{
+            "description":"The given ID could not be found or the anchor could not be removed properly."
+          },
+          "default":{
+            "description":"Something went wrong...",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "put":{
+        "tags":[
+          "Anchor"
+        ],
+        "operationId":"updateAnchorById",
+        "description":"Updates the anchor with the given ID to the anchor instance which is submitted in the body of this request.",
+        "produces":[
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "name":"anchor_value",
+            "in":"body",
+            "description":"The anchor to update",
+            "required":true,
+            "schema":{
+              "$ref":"#/definitions/Anchor"
+            }
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":"The altered anchor.",
+            "schema":{
+              "$ref":"#/definitions/Anchor"
+            }
+          },
+          "409":{
+            "description":"The given ID could not be found or the anchor could not be altered properly."
+          },
+          "default":{
+            "description":"Something went wrong...",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "parameters":[
+        {
+          "name":"anchorID",
+          "in":"path",
+          "description":"Anchor ID",
+          "required":true,
+          "type":"integer",
+          "format":"int64"
+        }
+      ]
+    },
+    "/anchor/name/{anchor_name}":{
+      "x-swagger-router-controller":"anchor",
+      "get":{
+        "tags":[
+          "Anchor"
+        ],
+        "operationId":"getAnchorByName",
+        "description":"Returns the anchor with the provided name. The name is a unique value for every anchor. The anchor is the object that is static and makes it possible to calculate the position of a tag.",
+        "produces":[
+          "application/json"
+        ],
+        "responses":{
+          "200":{
+            "description":"The corresponding anchor for the given name.",
+            "schema":{
+              "$ref":"#/definitions/Anchor"
+            }
+          },
+          "409":{
+            "description":"The given name could not be found or the anchor could not be fetched properly."
+          },
+          "default":{
+            "description":"Something went wrong...",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "parameters":[
+        {
+          "name":"anchor_name",
+          "in":"path",
+          "description":"Anchor name",
+          "required":true,
+          "type":"string"
+        }
+      ]
+    },
+    "/anchor":{
+      "x-swagger-router-controller":"anchor",
+      "get":{
+        "tags":[
+          "Anchor"
+        ],
+        "operationId":"getAllAnchors",
+        "description":"This call gives all the defined anchors in every environment.",
+        "produces":[
+          "application/json"
+        ],
+        "responses":{
+          "200":{
+            "description":"Returns every anchors.",
+            "schema":{
+              "type":"array",
+              "items":{
+                "$ref":"#/definitions/Anchor"
+              }
+            }
+          },
+          "default":{
+            "description":"Something went wrong...",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "post":{
+        "tags":[
+          "Anchor"
+        ],
+        "operationId":"addAnchor",
+        "description":"Add the anchor to the list of anchors.",
+        "produces":[
+          "application/json"
+        ],
+        "responses":{
+          "200":{
+            "description":"The corresponding anchor for the given ID.",
+            "schema":{
+              "$ref":"#/definitions/Anchor"
+            }
+          },
+          "409":{
+            "description":"The given ID could not be found or the anchor could not be added properly."
+          },
+          "default":{
+            "description":"Something went wrong...",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/environment/anchor/{environmentID}":{
+      "x-swagger-router-controller":"anchor",
+      "get":{
+        "tags":[
+          "Anchor"
+        ],
+        "operationId":"getAnchorsForEnvironment",
+        "description":"This call returns all the defined anchors in the environment with the given environment ID as parameter.",
+        "produces":[
+          "application/json"
+        ],
+        "responses":{
+          "200":{
+            "description":"All the anchors situated in environment with environmentID equal to the given ID.",
+            "schema":{
+              "type":"array",
+              "items":{
+                "$ref":"#/definitions/Anchor"
+              }
+            }
+          },
+          "409":{
+            "description":"The given ID could not be found."
+          },
+          "default":{
+            "description":"Something went wrong...",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "parameters":[
+        {
+          "name":"environmentID",
+          "in":"path",
+          "description":"The ID of the environment.",
+          "required":true,
+          "type":"integer"
+        }
+      ]
+    },
+    "/tag/{tagID}":{
+      "x-swagger-router-controller":"tag",
+      "get":{
+        "tags":[
+          "Tag"
+        ],
+        "operationId":"getTagById",
+        "description":"Returns the tag with the provided ID. The ID is a unique value for every tag. The tag is the object for which a location can be calulated.",
+        "produces":[
+          "application/json"
+        ],
+        "responses":{
+          "200":{
+            "description":"The corresponding tag for the given ID.",
+            "schema":{
+              "$ref":"#/definitions/Tag"
+            }
+          },
+          "409":{
+            "description":"The given ID could not be found or could not be removed properly.",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          },
+          "default":{
+            "description":"Tag couldn't be consulted.",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "delete":{
+        "tags":[
+          "Tag"
+        ],
+        "operationId":"removeTagById",
+        "description":"Removes the tag with the provided ID. The ID is a unique value for every tag. The tag is the object for which a location can be calulated.",
+        "responses":{
+          "204":{
+            "description":"The corresponding tag for the given ID is removed."
+          },
+          "409":{
+            "description":"The given ID could not be found or the tag could not be removed properly."
+          },
+          "default":{
+            "description":"Something went wrong...",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "put":{
+        "tags":[
+          "Tag"
+        ],
+        "operationId":"updateTagById",
+        "description":"Updates the tag with the given ID to the tag that is submitted in the body of this request.",
+        "produces":[
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "name":"tag_value",
+            "in":"body",
+            "description":"The tag to update",
+            "required":true,
+            "schema":{
+              "$ref":"#/definitions/Tag"
+            }
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":"The corresponding tag for the given ID.",
+            "schema":{
+              "$ref":"#/definitions/Tag"
+            }
+          },
+          "409":{
+            "description":"The given ID could not be found or the tag could not be altered properly."
+          },
+          "default":{
+            "description":"Something went wrong...",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "parameters":[
+        {
+          "name":"tagID",
+          "in":"path",
+          "description":"Tag ID",
+          "required":true,
+          "type":"integer",
+          "format":"int64"
+        }
+      ]
+    },
+    "/tag/name/{tag_name}":{
+      "x-swagger-router-controller":"tag",
+      "get":{
+        "tags":[
+          "Tag"
+        ],
+        "operationId":"getTagByName",
+        "description":"Returns the tag with the provided name. The name is a unique value for every tag.",
+        "produces":[
+          "application/json"
+        ],
+        "responses":{
+          "200":{
+            "description":"The corresponding tag for the given name.",
+            "schema":{
+              "$ref":"#/definitions/Tag"
+            }
+          },
+          "409":{
+            "description":"Something went wrong...",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "parameters":[
+        {
+          "name":"tag_name",
+          "in":"path",
+          "description":"Tag name",
+          "required":true,
+          "type":"string"
+        }
+      ]
+    },
+    "/tag":{
+      "x-swagger-router-controller":"tag",
+      "get":{
+        "tags":[
+          "Tag"
+        ],
+        "operationId":"getAllTags",
+        "description":"This call gives all the defined tags in every environment.",
+        "produces":[
+          "application/json"
+        ],
+        "responses":{
+          "200":{
+            "description":"Returns the defined tags.",
+            "schema":{
+              "type":"array",
+              "items":{
+                "$ref":"#/definitions/Tag"
+              }
+            }
+          },
+          "default":{
+            "description":"Something went wrong...",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "post":{
+        "tags":[
+          "Tag"
+        ],
+        "operationId":"addTag",
+        "description":"Add the anchor to the list of anchors.",
+        "produces":[
+          "application/json"
+        ],
+        "responses":{
+          "200":{
+            "description":"The corresponding tag for the given ID.",
+            "schema":{
+              "$ref":"#/definitions/Tag"
+            }
+          },
+          "409":{
+            "description":"The tag could not be added.",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/environment/tag/{environmentID}":{
+      "x-swagger-router-controller":"tag",
+      "get":{
+        "tags":[
+          "Tag"
+        ],
+        "operationId":"getTagsForEnvironment",
+        "description":"This call gives all the defined anchors in the zone with the given ID as parameter.",
+        "produces":[
+          "application/json"
+        ],
+        "responses":{
+          "200":{
+            "description":"All the anchors situated in environment with environmentID equal to the given ID.",
+            "schema":{
+              "type":"array",
+              "items":{
+                "$ref":"#/definitions/Tag"
+              }
+            }
+          },
+          "404":{
+            "description":"Tags couldn't be loaded.",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "parameters":[
+        {
+          "name":"environmentID",
+          "in":"path",
+          "description":"ID of the specific environment",
+          "required":true,
+          "type":"integer"
+        }
+      ]
+    },
+    "/zone/border_point/{zoneID}":{
+      "x-swagger-router-controller":"zone",
+      "get":{
+        "tags":[
+          "Zone"
+        ],
+        "operationId":"getBorderPointsFromZone",
+        "description":"Returns all the points that define the zone.",
+        "produces":[
+          "application/json"
+        ],
+        "responses":{
+          "200":{
+            "description":"The corresponding tag for the given ID.",
+            "schema":{
+              "type":"array",
+              "items":{
+                "$ref":"#/definitions/ZoneBorderPoint"
+              }
+            }
+          },
+          "409":{
+            "description":"The given zone could not be found.",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "post":{
+        "tags":[
+          "Zone"
+        ],
+        "operationId":"addBorderPointsToZone",
+        "description":"Adding a point that defines a zone.",
+        "parameters":[
+          {
+            "name":"ZoneBorderPoint",
+            "in":"body",
+            "description":"The point to add",
+            "required":true,
+            "schema":{
+              "$ref":"#/definitions/ZoneBorderPoint"
+            }
+          }
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "responses":{
+          "200":{
+            "description":"The point is added succesfully.",
+            "schema":{
+              "$ref":"#/definitions/Tag"
+            }
+          },
+          "409":{
+            "description":"The zone could not be found or the point could not be added.",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "parameters":[
+        {
+          "name":"zoneID",
+          "in":"path",
+          "description":"The tag to update",
+          "required":true,
+          "type":"string"
+        }
+      ]
+    },
+    "/zone/{zoneID}":{
+      "x-swagger-router-controller":"zone",
+      "get":{
+        "tags":[
+          "Zone"
+        ],
+        "operationId":"getZoneById",
+        "description":"Returns the zone with the given ID.",
+        "produces":[
+          "application/json"
+        ],
+        "responses":{
+          "200":{
+            "description":"The corresponding zone for the given ID.",
+            "schema":{
+              "$ref":"#/definitions/Zone"
+            }
+          },
+          "409":{
+            "description":"The given ID could not be found.",
+            "schema":{
+              "$ref":"#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "delete":{
+        "tags":[
+          "Zone"
+        ],
+        "operationId":"removeZoneById",
+        "description":"Removes the zone with the provided ID. The ID is a unique value for every zone. The zone is a logical part of an environment.",
+        "responses":{
+          "204":{
+            "description":"The corresponding zone for the given ID is removed."
+          },
+          "409":{
+            "description":"The given ID could not be found or the zone could not be removed properly."
+          }
+        }
+      },
+      "put":{
+        "tags":[
+          "Zone"
+        ],
+        "operationId":"updateZoneById",
+        "description":"Updates the zone with the given ID to the zone that is submitted in the body of this request.",
+        "produces":[
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "name":"zone_value",
+            "in":"body",
+            "description":"The zone to update",
+            "required":true,
+            "schema":{
+              "$ref":"#/definitions/Zone"
+            }
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":"The corresponding zone for the given ID.",
+            "schema":{
+              "$ref":"#/definitions/Zone"
+            }
+          },
+          "409":{
+            "description":"The given ID could not be found or the zone could not be removed."
+          }
+        }
+      },
+      "parameters":[
+        {
+          "name":"zoneID",
+          "in":"path",
+          "description":"The tag to update",
+          "required":true,
+          "type":"string"
+        }
+      ]
+    }
+  },
+  "definitions":{
+    "Anchor":{
+      "type":"object",
+      "properties":{
+        "anchorID":{
+          "type":"integer",
+          "format":"int64"
+        },
+        "name":{
+          "type":"string"
+        },
+        "environmentID":{
+          "type":"integer",
+          "format":"int64"
+        },
+        "hardwareVersion":{
+          "type":"string",
+          "format":"byte"
+        },
+        "firmwareVersion":{
+          "type":"string",
+          "format":"byte"
+        },
+        "x":{
+          "type":"integer",
+          "format":"int32"
+        },
+        "y":{
+          "type":"integer",
+          "format":"int32"
+        },
+        "z":{
+          "type":"integer",
+          "format":"int32"
+        },
+        "timestamp":{
+          "type":"string",
+          "format":"date-time"
+        }
+      },
+      "required":[
+        "anchorID",
+        "name"
+      ]
+    },
+    "Tag":{
+      "type":"object",
+      "properties":{
+        "tagID":{
+          "type":"integer",
+          "format":"int64"
+        },
+        "name":{
+          "type":"string"
+        },
+        "environmentID":{
+          "type":"integer",
+          "format":"int64"
+        },
+        "hardwareVersion":{
+          "type":"string",
+          "format":"byte"
+        },
+        "firmwareVersion":{
+          "type":"string",
+          "format":"byte"
+        },
+        "batteryLevel":{
+          "type":"number",
+          "format":"float"
+        },
+        "updateRate":{
+          "type":"integer",
+          "format":"int32"
+        },
+        "iconPath":{
+          "type":"string"
+        },
+        "iconColor":{
+          "type":"string"
+        }
+      },
+      "required":[
+        "tagID",
+        "name"
+      ]
+    },
+    "ZoneBorderPoint":{
+      "type":"object",
+      "properties":{
+        "zoneBorderPointsID":{
+          "type":"integer",
+          "format":"int64"
+        },
+        "zoneID":{
+          "type":"integer",
+          "format":"int64"
+        },
+        "x":{
+          "type":"integer",
+          "format":"int32"
+        },
+        "y":{
+          "type":"integer",
+          "format":"int32"
+        },
+        "z":{
+          "type":"integer",
+          "format":"int32"
+        }
+      },
+      "required":[
+        "zoneBorderPointsID",
+        "zoneID",
+        "x",
+        "y",
+        "z"
+      ]
+    },
+    "Zone":{
+      "type":"object",
+      "properties":{
+        "zoneID":{
+          "type":"integer",
+          "format":"int64"
+        },
+        "environmentID":{
+          "type":"integer",
+          "format":"int64"
+        },
+        "name":{
+          "type":"string"
+        },
+        "area":{
+          "type":"number",
+          "format":"double"
+        }
+      },
+      "required":[
+        "environmentID",
+        "zoneID"
+      ]
+    },
+    "ErrorModel":{
+      "type":"object",
+      "required":[
+        "message",
+        "code"
+      ],
+      "properties":{
+        "message":{
+          "type":"string"
+        },
+        "code":{
+          "type":"integer",
+          "minimum":100,
+          "maximum":600
+        }
+      }
+    }
+  }
+}
